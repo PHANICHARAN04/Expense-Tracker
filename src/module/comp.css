@@ -1,0 +1,203 @@
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    background-color: #e73109;
+    border-radius: 8px;
+  }
+
+  .button{
+    background-color: rgb(72, 207, 231);
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    /* background-color: #dc3545; */
+    /* color: #fff; */
+    cursor: pointer;
+    margin-left: 5px;
+    align-self: center;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .input-group {
+    margin-bottom: 10px;
+  }
+  
+  input[type="text"],
+  input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    margin-bottom: 10px;
+  }
+  
+  li span {
+    margin-right: 10px;
+  }
+  
+  .summary {
+    text-align: center;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #00000014;
+    margin-bottom: 20px;
+  }
+  
+  .summary h3 {
+    margin-bottom: 10px;
+  }
+  
+  .summary p {
+    margin: 5px 0;
+  }
+  
+  .summary b {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  
+  
+
+  .transactions {
+    margin-top: 20px;
+  }
+  
+  .transactions h3 {
+    margin-bottom: 10px;
+  }
+  
+  .transactions ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .transactions li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .transactions li span {
+    margin-right: 10px;
+  }
+  
+  .transactions button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    /* background-color: #dc3545; */
+    color: #fff;
+    cursor: pointer;
+    margin-left: 5px;
+  }
+
+  .transactions li .buttons {
+    display: flex;
+  }
+  
+  .transactions .delete-button {
+    background-color: #dc3545; /* Red */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .transactions .edit-button {
+    background-color: #0cdbde; /* Yellow */
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .transactions .edit-button:hover {
+    background-color: #838a00;
+  }
+
+  .transactions .delete-button:hover {
+    background-color: #838a00;
+  }
+    
+  .transactions {
+    margin-top: 20px;
+  }
+  
+  .transactions h3 {
+    margin-bottom: 10px;
+  }
+  
+  .transactions ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .transactions li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  .transactions li.expense {
+    background-color: #ffcccc; /* Light red for expense transactions */
+  }
+  
+  .transactions li.income {
+    background-color: #ccffcc; /* Light green for income transactions */
+  }
+  
+  .transactions li span {
+    margin-right: 10px;
+  }
+    
+  .transactions li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+  }
+   
+  .buttons button {
+    margin-left: 5px;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    border: none;
+    color: #130101;
+  }
+  
+  .buttons .delete-button {
+    background-color: #c31019 !important;
+    color: #fff !important;
+  }
+  
+  .buttons .edit-button {
+    background-color: #1890ff !important;
+    color: #fff !important;
+  }
+  
+  
