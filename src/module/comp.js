@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import './comp.css';
 import CountUp from 'react-countup';
 import { Col, Row, Statistic, Input, Select, Button, Switch, message } from 'antd';
@@ -53,8 +53,37 @@ const TransactionItem = styled.li`
     background-color: #dc3545;
   }
 `;
+const GlobalStyle = createGlobalStyle`
+  body {
+    background-color: ${({ theme }) => theme.body};
+    color: ${({ theme }) => theme.textColor};
+  }
+`;
 
 function ExpenseTracker() {
+  const [theme, setTheme] = useState('light');
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
+  const themes = {
+    light: {
+      body: '#f0f2f5',
+      backgroundColor: '#fff',
+      textColor: '#333',
+      transactionBackground: '#fff',
+      incomeBackground: '#28e00c',
+      expenseBackground: '#dc3545',
+    },
+    dark: {
+      body: '#333',
+      backgroundColor: '#222',
+      textColor: '#fff',
+      transactionBackground: '#333',
+      incomeBackground: '#135200',
+      expenseBackground: '#ff1100',
+    },
+  };
   const [transactions, setTransactions] = useState([]);
   const [inputDescription, setInputDescription] = useState('');
   const [inputAmount, setInputAmount] = useState('');
@@ -132,14 +161,14 @@ function ExpenseTracker() {
   const totalExpense = calculateTotal('expense');
 
   useEffect(() => {
-    if (totalExpense > budget) {
+    if (totalExpense > budget && budgetEnabled) {
       message.warning({
         content: 'Your expenses have exceeded the budget!',
         icon: <ExclamationCircleOutlined />,
         duration: 5,
       });
     }
-  }, [totalExpense, budget]);
+  }, [totalExpense, budget, budgetEnabled]);
 
 
   const addTransaction = () => {
@@ -195,6 +224,8 @@ function ExpenseTracker() {
 
   return (
     <div className="">
+      <GlobalStyle theme={themes[theme]} />
+      <Button onClick={toggleTheme}>Toggle {theme === 'light' ? 'Dark' : 'Light'} Mode</Button>
       <br />
       <Container>
         <h3>Add your New Transaction</h3>
@@ -300,9 +331,7 @@ function ExpenseTracker() {
         <br/><br/>
         <h3>Visual Representation of your Transactions</h3>
         <canvas id="transactionChart"></canvas>
-
       </Container>
-      <br/>
     </div>
   );
 }
