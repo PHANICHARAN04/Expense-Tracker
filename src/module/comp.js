@@ -5,7 +5,7 @@ import CountUp from 'react-countup';
 import { Col, Row, Statistic, Input, Select, Button, Switch, message } from 'antd';
 import { ArrowDownOutlined, ArrowUpOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import Chart from 'chart.js/auto';
-
+import axios from 'axios';
 
 const { Option } = Select;
 
@@ -25,12 +25,6 @@ const InputContainer = styled.div`
     margin-right: 10px;
   }
 `;
-
-// const InputContainer = styled.div`
-//   margin-bottom: 20px;
-//   display: flex;
-//   align-items: center;
-// `;
 
 const TransactionsList = styled.ul`
   list-style: none;
@@ -92,6 +86,12 @@ function ExpenseTracker() {
   const [chartData, setChartData] = useState({});
   const [budget, setBudget] = useState(0);
   const [budgetEnabled, setBudgetEnabled] = useState(false); // State to manage budget enable/disable
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/transactions')
+      .then(res => setTransactions(res.data))
+      .catch(err => console.error(err));
+  }, []);
 
   useEffect(() => {
     const chartLabels = transactions.map(transaction => transaction.description);
@@ -174,47 +174,46 @@ function ExpenseTracker() {
   const addTransaction = () => {
     if (inputDescription.trim() !== '' && inputAmount !== '') {
       const newTransaction = {
-        id: Math.floor(Math.random() * 100000),
         description: inputDescription,
         amount: parseFloat(inputAmount),
         type: transactionType
       };
-      setTransactions([...transactions, newTransaction]);
-      setInputDescription('');
-      setInputAmount('');
-      setTransactionType('expense');
+      
+      axios.post('http://localhost:5000/transactions', newTransaction)
+        .then(res => {
+          setTransactions([...transactions, res.data]);
+          setInputDescription('');
+          setInputAmount('');
+          setTransactionType('expense');
+        })
+        .catch(err => console.error(err));
     }
   };
 
   const deleteTransaction = (id) => {
-    const updatedTransactions = transactions.filter((transaction) => transaction.id !== id);
-    setTransactions(updatedTransactions);
+    axios.delete(`http://localhost:5000/transactions/${id}`)
+      .then(() => {
+        setTransactions(transactions.filter(transaction => transaction._id !== id));
+      })
+      .catch(err => console.error(err));
   };
+  
 
   const editTransaction = (id, newDescription, newAmount) => {
-    const updatedTransactions = transactions.map((transaction) => {
-      if (transaction.id === id) {
-        return {
-          ...transaction,
-          description: newDescription,
-          amount: newAmount
-        };
-      }
-      return transaction;
-    });
-    setTransactions(updatedTransactions);
+    const updatedData = {
+      description: newDescription,
+      amount: newAmount
+    };
+  
+    axios.put(`http://localhost:5000/transactions/${id}`, updatedData)
+      .then(res => {
+        setTransactions(transactions.map(transaction => 
+          transaction._id === id ? res.data : transaction
+        ));
+      })
+      .catch(err => console.error(err));
   };
 
-  // const calculateTotal = (type) => {
-  //   return transactions.reduce((total, transaction) => {
-  //     if (transaction.type === type) {
-  //       return total + transaction.amount;
-  //     }
-  //     return total;
-  //   }, 0);
-  // };
-
-  // const totalExpense = calculateTotal('expense');
   const totalIncome = calculateTotal('income');
   const availableBalance = totalIncome - totalExpense;
 
@@ -312,20 +311,20 @@ function ExpenseTracker() {
 
         <TransactionsList>
           {filteredTransactions.map((transaction) => (
-            <TransactionItem key={transaction.id} className={transaction.type}>
-              <span>{transaction.description} - ₹{transaction.amount}</span>
-              <div className="buttons">
-                <Button onClick={() => deleteTransaction(transaction.id)}>Delete</Button>
-                <Button onClick={() => {
-                  const newDescription = prompt('Enter new description:', transaction.description);
-                  const newAmount = parseFloat(prompt('Enter new amount:', transaction.amount));
-                  if (newDescription !== null && !isNaN(newAmount)) {
-                    editTransaction(transaction.id, newDescription, newAmount);
-                  }
-                }}>Edit</Button>
-              </div>
-            </TransactionItem>
-          ))}
+  <TransactionItem key={transaction._id} className={transaction.type}>
+    <span>{transaction.description} - ₹{transaction.amount}</span>
+    <div className="buttons">
+      <Button onClick={() => deleteTransaction(transaction._id)}>Delete</Button>
+      <Button onClick={() => {
+        const newDescription = prompt('Enter new description:', transaction.description);
+        const newAmount = parseFloat(prompt('Enter new amount:', transaction.amount));
+        if (newDescription !== null && !isNaN(newAmount)) {
+          editTransaction(transaction._id, newDescription, newAmount);
+        }
+      }}>Edit</Button>
+    </div>
+  </TransactionItem>
+))}
         </TransactionsList>
 
         <br/><br/>
